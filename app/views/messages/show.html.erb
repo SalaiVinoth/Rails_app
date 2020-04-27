@@ -1,0 +1,37 @@
+<div class="col-md-10 col-md-offset-1">
+  <div class="message-show">
+    <h2><%= link_to @message.title, @message.url %></h2>
+    <p class="message-posted-by">
+      <%= time_ago_in_words(@message.created_at) %> ago by <%= @message.user.email %>
+    </p>
+    <p class="message-desc"><%= @message.description %></p>
+    <h3 class="comment-section-header">Comments:</h3>
+   
+    <p><%= render @message.comments %></p>
+    <h3 class="reply-to-msg">Join Discussion:</h3>
+    <%= render 'comments/form' %>
+     <div class="btn-group pull-right">
+      <%= link_to like_message_path(@message), method: :put, class: "btn btn-default btn-sm" do %>
+        <span class="glyphicon glyphicon-chevron-up"></span>
+        Upvote
+        <%= @message.get_upvotes.size %>
+      <% end %>
+      <%= link_to dislike_message_path(@message), method: :put, class: "btn btn-default btn-sm" do %>
+        <span class="glyphicon glyphicon-chevron-down"></span>
+        Downvote
+        <%= @message.get_downvotes.size %>
+      <% end %>
+    </div>
+    <div class="links btn-group">
+      <%= link_to 'Visit URL', @message.url, class: "btn btn-primary btn-lg btn-block" %><br>
+      <%= link_to "Back", root_path, class: "btn btn-default" %>
+      
+      <% if user_signed_in? %>
+        <% if @message.user_id == current_user.id %>
+          <%= link_to "Fix", edit_message_path(@message), class: "btn btn-warning" %>
+          <%= link_to "Delete", message_path(@message), method: :delete, data: {confirm: "Are you sure ?"}, class: "btn btn-danger" %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>

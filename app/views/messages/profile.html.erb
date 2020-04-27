@@ -1,0 +1,33 @@
+<div class="row">
+  <div class="col-sm-2">
+    <div class="card">
+    <img src="https://maxcdn.icons8.com/Share/icon/Users//user_male_circle_filled1600.png" alt="John" style="width:30%">
+    <h1>Anonymous</h1>
+    <p class="title"><%= current_user.email %></p>
+    <p>User ID: <%= current_user.id %></p>
+    <p>News: <%= current_user.messages.count %> </p>
+    <p>Following: <%= current_user.following.count %></p>
+    <p>Followers: <%= current_user.followers.count %></p>
+    </div>
+  </div>
+
+  <div class="col-sm-10">
+  <% @user.each do |user| %>
+  <%if current_user.id != user.id%>
+  <div class="col-md-10 col-md-offset-1">
+    <div class="message">
+      <h2 class="message-title">
+         <%= user.email%>
+      </h2>
+       <p class="comment-posted-by">By: <%= user.email %> <%= time_ago_in_words(user.created_at) %> Ago</p> 
+      <%= render '/messages/follow_button', :user => User.find(user.id) %>
+            
+    </div>
+  </div>
+  <%end%>
+<% end %>
+  </div>
+</div>
+
+
+

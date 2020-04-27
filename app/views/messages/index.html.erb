@@ -1,0 +1,28 @@
+<% if user_signed_in? %>
+<% current_user.active_relationships.each do |followed| %>
+<% user = User.find(followed.followed_id) %>
+<% user.messages.each do |message| %>
+  <div class="col-md-10 col-md-offset-1">
+    <div class="message">
+      <h2 class="message-title">
+         <%= link_to message.title, message.url%>
+      </h2>
+       <p class="comment-posted-by">By: <%= message.user.email %> <%= time_ago_in_words(message.created_at) %> Ago</p> 
+      <%= link_to "Join Convo", message, class: "btn-custom" %>
+      <div class="btn-group pull-right">
+      <%= link_to like_message_path(message), method: :put, class: "btn btn-default btn-sm" do %>
+        <span class="glyphicon glyphicon-chevron-up"></span>
+        Upvote
+        <%= message.get_upvotes.size %>
+      <% end %>
+      <%= link_to dislike_message_path(message), method: :put, class: "btn btn-default btn-sm" do %>
+        <span class="glyphicon glyphicon-chevron-down"></span>
+        Downvote
+        <%= message.get_downvotes.size %>
+      <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>
+<% end %>
+<% end %>
